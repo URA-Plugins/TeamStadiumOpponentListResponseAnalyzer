@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamStadiumOpponentListResponseAnalyzer", "TeamStadiumOpponentListResponseAnalyzer.csproj", "{865A13A0-CE8E-AC53-6539-B44EF2034028}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{865A13A0-CE8E-AC53-6539-B44EF2034028}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{865A13A0-CE8E-AC53-6539-B44EF2034028}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{865A13A0-CE8E-AC53-6539-B44EF2034028}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{865A13A0-CE8E-AC53-6539-B44EF2034028}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {56B85FDD-8677-41A6-B580-28C00C783887}
+	EndGlobalSection
+EndGlobal
