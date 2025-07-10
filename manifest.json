@@ -1,0 +1,13 @@
+{
+  "Author": "离披&Github Contributors",
+  "InternalName": "TeamStadiumOpponentListResponseAnalyzer",
+  "Name": "显示竞技场对手信息",
+  "Description": "现在已经没啥用了",
+  "Changelog": "",
+  "Version": "1.0.0",
+  "Dependencies": [],
+  "Targets": [],
+  "RepositoryUrl": "https://github.com/URA-Plugins/TeamStadiumOpponentListResponseAnalyzer",
+  "DownloadUrl": "https://gh.shuise.dev/github.com/URA-Plugins/TeamStadiumOpponentListResponseAnalyzer/releases/latest/download/TeamStadiumOpponentListResponseAnalyzer.zip",
+  "LastUpdate": "1751719983"
+}
