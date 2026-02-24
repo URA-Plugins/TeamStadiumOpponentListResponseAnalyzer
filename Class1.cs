@@ -13,20 +13,19 @@ namespace TeamStadiumOpponentListResponseAnalyzer
     {
         [PluginDescription("显示竞技场对手信息")]
         public string Name => "TeamStadiumOpponentListResponseAnalyzer";
-        public Version Version => new(1, 0, 0);
         public string Author => "离披&Github Contributors";
         public string[] Targets => [];
 
         public async Task UpdatePlugin(ProgressContext ctx)
         {
-            var progress = ctx.AddTask($"[{Name}] 更新");
+            var progress = ctx.AddTask($"[[{Name}]] 更新");
 
             using var client = new HttpClient();
             using var resp = await client.GetAsync($"https://api.github.com/repos/URA-Plugins/{Name}/releases/latest");
             var json = await resp.Content.ReadAsStringAsync();
             var jo = JObject.Parse(json);
 
-            var isLatest = ("v" + Version.ToString()).Equals("v" + jo["tag_name"]?.ToString());
+            var isLatest = ("v" + ((IPlugin)this).Version.ToString()).Equals("v" + jo["tag_name"]?.ToString());
             if (isLatest)
             {
                 progress.Increment(progress.MaxValue);
