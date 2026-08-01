@@ -1,30 +1,38 @@
 using Gallop;
 using Gallop.Endpoints;
 using System.Text.Json;
-using UmamusumeResponseAnalyzer.LiveDisplay;
+using UmamusumeResponseAnalyzer.TerminalGui;
 using UmamusumeResponseAnalyzer.Plugin;
 
 namespace TeamStadiumOpponentListResponseAnalyzer
 {
     public class TeamStadiumOpponentListResponseAnalyzer : IPlugin
     {
-        public string Name => "TeamStadiumOpponentListResponseAnalyzer";
-        ILiveDisplayOutput? liveDisplay;
-        LiveDisplayWorkspace? workspace;
+        const string OpponentsPanelKey = "opponents";
+        const string CurrentOpponentPanelKey = "current-opponent";
+
+        Workspace? workspace;
+        bool hasPublishedOpponentsPanel;
+        bool hasPublishedCurrentOpponentPanel;
 
         public void Initialize(IPluginContext context)
         {
-            liveDisplay = context.LiveDisplay;
+            hasPublishedOpponentsPanel = false;
+            hasPublishedCurrentOpponentPanel = false;
         }
 
         public void Dispose()
         {
-            var output = liveDisplay;
-            var target = workspace;
-            liveDisplay = null;
-            workspace = null;
-            if (output is not null && target is not null)
-                output.RemoveWorkspace(target);
+            if (hasPublishedOpponentsPanel)
+            {
+                workspace!.RemovePanel(OpponentsPanelKey);
+                hasPublishedOpponentsPanel = false;
+            }
+            if (hasPublishedCurrentOpponentPanel)
+            {
+                workspace!.RemovePanel(CurrentOpponentPanelKey);
+                hasPublishedCurrentOpponentPanel = false;
+            }
         }
 
         [ResponseAnalyzer<GameApi.TeamStadium.OpponentList>]
@@ -35,29 +43,34 @@ namespace TeamStadiumOpponentListResponseAnalyzer
                 var user = opponent.user_info;
                 return $"#{opponent.strength}: {user.name} 育成数 {user.single_mode_play_count}";
             });
-            LiveDisplay.SetPanel(
-                Workspace,
-                "opponents",
+            var workspace = this.workspace ??= Workspace.Create(nameof(TeamStadiumOpponentListResponseAnalyzer));
+            workspace.SetPanel(
+                OpponentsPanelKey,
                 "对手列表",
-                LiveDisplayContent.Text(string.Join(Environment.NewLine, rows)));
+                WorkspaceContent.Text(string.Join(Environment.NewLine, rows)));
+            hasPublishedOpponentsPanel = true;
             return ValueTask.CompletedTask;
         }
 
         [ResponseAnalyzer<GameApi.TeamStadium.DecideFrameOrder>]
         public ValueTask AnalyzeDecideFrameOrder(TeamStadiumDecideFrameOrderResponse response)
         {
-            LiveDisplay.SetPanel(Workspace, "current-opponent", "当前对手", AnalyzeOpponent(response.data.opponent_info_copy));
+            var workspace = this.workspace ??= Workspace.Create(nameof(TeamStadiumOpponentListResponseAnalyzer));
+            workspace.SetPanel(CurrentOpponentPanelKey, "当前对手", AnalyzeOpponent(response.data.opponent_info_copy));
+            hasPublishedCurrentOpponentPanel = true;
             return ValueTask.CompletedTask;
         }
 
         [ResponseAnalyzer<GameApi.TeamStadium.Start>]
         public ValueTask AnalyzeStart(TeamStadiumStartResponse response)
         {
-            LiveDisplay.SetPanel(Workspace, "current-opponent", "当前对手", AnalyzeOpponent(response.data.opponent_info_copy));
+            var workspace = this.workspace ??= Workspace.Create(nameof(TeamStadiumOpponentListResponseAnalyzer));
+            workspace.SetPanel(CurrentOpponentPanelKey, "当前对手", AnalyzeOpponent(response.data.opponent_info_copy));
+            hasPublishedCurrentOpponentPanel = true;
             return ValueTask.CompletedTask;
         }
 
-        static LiveDisplayContent AnalyzeOpponent(TeamStadiumOpponent opponent)
+        static WorkspaceContent AnalyzeOpponent(TeamStadiumOpponent opponent)
         {
             var team = opponent.team_data_array;
             var trained = opponent.trained_chara_array;
@@ -103,7 +116,7 @@ namespace TeamStadiumOpponentListResponseAnalyzer
                 }
             }
 
-            return LiveDisplayContent.Text(string.Join(Environment.NewLine,
+            return WorkspaceContent.Text(string.Join(Environment.NewLine,
             [
                 $"当前对手: {name}",
                 $"距离适性: {JsonSerializer.Serialize(distStats)}",
@@ -116,12 +129,6 @@ namespace TeamStadiumOpponentListResponseAnalyzer
         {
             stats[key] = stats.GetValueOrDefault(key) + 1;
         }
-
-        ILiveDisplayOutput LiveDisplay => liveDisplay
-            ?? throw new InvalidOperationException("TeamStadiumOpponentListResponseAnalyzer 尚未初始化 LiveDisplay。");
-
-        LiveDisplayWorkspace Workspace => workspace
-            ??= LiveDisplay.CreateWorkspace(Name);
 
         static string GetProper(int proper) => proper switch
         {
