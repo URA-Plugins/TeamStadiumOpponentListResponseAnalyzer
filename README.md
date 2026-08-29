@@ -12,8 +12,9 @@
 
 ## 构建
 
-需要 .NET 10 SDK 和 URA Host 项目。从本仓库根目录执行：
+仓库通过 Git submodule 固定 Host 源码。克隆后在仓库根执行：
 
 ```powershell
-dotnet build .\TeamStadiumOpponentListResponseAnalyzer.csproj -p:UraHostProjectPath="<ura-host-project>" -p:GenerateUraPluginManifestOnBuild=false -p:PackageUraPluginOnBuild=false -p:DeployUraPluginToLocalAppDataOnBuild=false
+git -c core.longpaths=true submodule update --init --recursive
+dotnet build .\TeamStadiumOpponentListResponseAnalyzer.csproj -c Release -m:1 -p:RuntimeIdentifier=win-x64 -p:SelfContained=false -p:PlatformTarget=AnyCPU -p:DeployUraPluginToLocalAppDataOnBuild=false
 ```
