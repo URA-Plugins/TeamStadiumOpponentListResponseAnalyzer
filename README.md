@@ -12,9 +12,8 @@
 
 ## 构建
 
-仓库通过 Git submodule 固定 Host 源码。克隆后在仓库根执行：
+仓库通过 `NuGet.Config` 恢复 `UmamusumeResponseAnalyzer` 编译期包。在仓库根执行：
 
 ```powershell
-git -c core.longpaths=true submodule update --init --recursive
 dotnet build .\TeamStadiumOpponentListResponseAnalyzer.csproj -c Release -m:1 -p:RuntimeIdentifier=win-x64 -p:SelfContained=false -p:PlatformTarget=AnyCPU -p:DeployUraPluginToLocalAppDataOnBuild=false
 ```
