@@ -21,7 +21,7 @@ namespace TeamStadiumOpponentListResponseAnalyzer
             hasPublishedCurrentOpponentPanel = false;
         }
 
-        public void Dispose()
+        public ValueTask DisposeAsync()
         {
             if (hasPublishedOpponentsPanel)
             {
@@ -33,6 +33,7 @@ namespace TeamStadiumOpponentListResponseAnalyzer
                 workspace!.RemovePanel(CurrentOpponentPanelKey);
                 hasPublishedCurrentOpponentPanel = false;
             }
+            return ValueTask.CompletedTask;
         }
 
         [ResponseAnalyzer<GameApi.TeamStadium.OpponentList>]
