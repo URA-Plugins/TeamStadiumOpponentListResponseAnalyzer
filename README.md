@@ -18,8 +18,6 @@
 dotnet build .\TeamStadiumOpponentListResponseAnalyzer.csproj -c Release -m:1 -p:RuntimeIdentifier=win-x64 -p:SelfContained=false -p:PlatformTarget=AnyCPU -p:DeployUraPluginToLocalAppDataOnBuild=false
 ```
 
-`tests/TeamStadiumOpponentListResponseAnalyzerSmoke` 默认检查本仓发布边界、闲置生命周期、真实特性注册分发、对手字段和字面文本的 framebuffer，以及释放后保留共享 workspace 并移除面板。测试工具源码由 `tests/Support/` 持有。
-
 ## 验证与发布
 
 在 Windows 仓库根执行 `act workflow_dispatch --artifact-server-path "$env:TEMP/ura-act-artifacts"`。本地与 GitHub 使用同一份 workflow；版本 tag 触发 GitHub Release 发布。环境要求、共用 workflow 本地映射和发布规则见 [URA plugin workflows](https://github.com/URA-Plugins/.github/blob/v1/README.md)。
