@@ -5,8 +5,8 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>2026.10.31</Version>
-    <PluginChangelog>更新 Host SDK 和构建依赖。</PluginChangelog>
+    <Version>2026.11.1</Version>
+    <PluginChangelog>竞技场 start 省略对手数据时保留已发布结果。</PluginChangelog>
 
     <!-- URA 插件元数据 -->
     <PluginInternalName>TeamStadiumOpponentListResponseAnalyzer</PluginInternalName>

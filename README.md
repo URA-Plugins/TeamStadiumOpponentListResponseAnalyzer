@@ -6,6 +6,7 @@
 
 - `GameApi.TeamStadium.OpponentList`：在“对手列表”面板中逐行显示 `strength`、用户名和育成次数。
 - `GameApi.TeamStadium.DecideFrameOrder` 与 `GameApi.TeamStadium.Start`：在“当前对手”面板中显示用户名，以及距离、场地和跑法适性等级的计数。
+- `Start` 可省略 `opponent_info_copy`，此时保留已发布的当前对手；有新对手数据时更新面板。
 - 适性统计只包含 `trained_chara_id != 0` 且能在 `trained_chara_array` 中找到对应记录的队伍成员。
 
 插件没有配置文件，也不持久化显示内容。未知的 `distance_type`、`running_style` 或适性值会明确失败。

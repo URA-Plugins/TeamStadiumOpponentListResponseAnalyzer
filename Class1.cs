@@ -65,8 +65,11 @@ namespace TeamStadiumOpponentListResponseAnalyzer
         [ResponseAnalyzer<GameApi.TeamStadium.Start>]
         public ValueTask AnalyzeStart(TeamStadiumStartResponse response)
         {
+            if (response.data.opponent_info_copy is not { } opponent)
+                return ValueTask.CompletedTask;
+
             var workspace = this.workspace ??= Workspace.Create(nameof(TeamStadiumOpponentListResponseAnalyzer));
-            workspace.SetPanel(CurrentOpponentPanelKey, "当前对手", AnalyzeOpponent(response.data.opponent_info_copy));
+            workspace.SetPanel(CurrentOpponentPanelKey, "当前对手", AnalyzeOpponent(opponent));
             hasPublishedCurrentOpponentPanel = true;
             return ValueTask.CompletedTask;
         }
